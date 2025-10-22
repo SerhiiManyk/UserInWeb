@@ -1,6 +1,5 @@
-package com.manser.web.jsonview;
+package com.mkyong.web.jsonview;
 
 public class Views {
     public static class Public {}
 }
-

@@ -1,7 +1,7 @@
-package com.manser.web.model;
+package com.mkyong.web.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.manser.web.jsonview.Views;
+import com.mkyong.web.jsonview.Views;
 
 public class User {
 
@@ -73,4 +73,3 @@ public class User {
     }
 
 }
-

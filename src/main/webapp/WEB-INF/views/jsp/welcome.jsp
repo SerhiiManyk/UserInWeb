@@ -64,7 +64,7 @@
 <div class="container">
 	<footer>
 		<p>
-			&copy; <a href="http://www.mkyong.com">Mkyong.com</a> 2015
+			&copy; <a href="http://www.manser.com">Mkyong.com</a> 2015
 		</p>
 	</footer>
 </div>

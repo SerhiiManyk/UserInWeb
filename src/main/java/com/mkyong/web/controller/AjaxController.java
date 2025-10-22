@@ -1,4 +1,4 @@
-package com.manser.web.controller;
+package com.mkyong.web.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.manser.web.jsonview.Views;
-import com.manser.web.model.AjaxResponseBody;
-import com.manser.web.model.SearchCriteria;
-import com.manser.web.model.User;
+import com.mkyong.web.jsonview.Views;
+import com.mkyong.web.model.AjaxResponseBody;
+import com.mkyong.web.model.SearchCriteria;
+import com.mkyong.web.model.User;
 
 @RestController
 public class AjaxController {
@@ -118,4 +118,3 @@ public class AjaxController {
 
     }
 }
-
