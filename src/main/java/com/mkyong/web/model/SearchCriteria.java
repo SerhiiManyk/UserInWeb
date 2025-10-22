@@ -1,4 +1,4 @@
-package com.manser.web.model;
+package com.mkyong.web.model;
 
 public class SearchCriteria {
 
@@ -27,4 +27,3 @@ public class SearchCriteria {
     }
 
 }
-

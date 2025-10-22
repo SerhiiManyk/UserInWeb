@@ -1,9 +1,11 @@
-package com.manser.servlet3;
+package com.mkyong.servlet3;
 
-import com.manser.config.SpringWebConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-public class MyWebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+import com.mkyong.config.SpringWebConfig;
+
+public class MyWebInitializer extends
+        AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
@@ -19,4 +21,5 @@ public class MyWebInitializer extends AbstractAnnotationConfigDispatcherServletI
     protected Class<?>[] getRootConfigClasses() {
         return null;
     }
+
 }
