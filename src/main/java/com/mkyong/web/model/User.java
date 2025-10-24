@@ -12,6 +12,7 @@ public class User {
     String email;
     @JsonView(Views.Public.class)
     String phone;
+    @JsonView(Views.Public.class)
     String address;
 
     public User() {

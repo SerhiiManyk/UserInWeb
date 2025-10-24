@@ -48,12 +48,24 @@
 					<input type="text" class="form-control" id="email">
 				</div>
 			</div>
+						<div class="form-group form-group-lg">
+            				<label class="col-sm-2 control-label">Adress Kurvy</label>
+            				<div class="col-sm-10">
+            					<input type="text" class="form-control" id="address">
+            				</div>
+            			</div>
 
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
 					<button type="submit" id="bth-search"
 						class="btn btn-primary btn-lg">Search</button>
+
+                                        					<button type="submit" id="bth-search"
+                                        						class="btn btn-primary btn-lg">Stara Kurva</button>
 				</div>
+
+
+
 			</div>
 		</form>
 
@@ -64,7 +76,7 @@
 <div class="container">
 	<footer>
 		<p>
-			&copy; <a href="http://www.manser.com">Mkyong.com</a> 2015
+			&copy; <a href="http://www.manser.com">ManukSerhii.com</a> 2025
 		</p>
 	</footer>
 </div>
@@ -116,7 +128,7 @@
 	}
 
 	function enableSearchButton(flag) {
-		$("#btn-search").prop("disabled", flag);
+		$("#bth-search").prop("disabled", flag);
 	}
 
 	function display(data) {
