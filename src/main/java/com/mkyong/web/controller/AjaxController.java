@@ -30,7 +30,7 @@ public class AjaxController {
         System.out.println("===============================result ----" +  result);
 
         if (isValidSearchCriteria(search)) {
-            List<User> users = findByUserNameOrEmail(search.getUsername(), search.getEmail());
+            List<User> users = findByUserNameOrEmailorAddress(search.getUsername(), search.getEmail(),search.getAddress());
 
 
             if (users.size() > 0) {
@@ -81,16 +81,16 @@ public class AjaxController {
     }
 
     // Simulate the search function
-    private List<User> findByUserNameOrEmail(String username, String email) {
+    private List<User> findByUserNameOrEmailorAddress(String username, String email, String address) {
 
         List<User> result = new ArrayList<User>();
 
         for (User user : users) {
             System.out.println("User ----" +  user);
 
-            if ((!StringUtils.isEmpty(username)) && (!StringUtils.isEmpty(email))) {
+            if ((!StringUtils.isEmpty(username)) && (!StringUtils.isEmpty(email)) && (!StringUtils.isEmpty(address))) {
 
-                if (username.equals(user.getUsername()) && email.equals(user.getEmail())) {
+                if (username.equals(user.getUsername()) && email.equals(user.getEmail()) && address.equals(user.getAddress())) {
                     result.add(user);
                     continue;
                 } else {
@@ -107,6 +107,13 @@ public class AjaxController {
 
             if (!StringUtils.isEmpty(email)) {
                 if (email.equals(user.getEmail())) {
+                    result.add(user);
+                    continue;
+                }
+            }
+
+            if (!StringUtils.isEmpty(address)) {
+                if (address.equals(user.getAddress())) {
                     result.add(user);
                     continue;
                 }
