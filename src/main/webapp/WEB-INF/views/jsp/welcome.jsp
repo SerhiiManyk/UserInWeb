@@ -103,6 +103,7 @@
 		var search = {}
 		search["username"] = $("#username").val();
 		search["email"] = $("#email").val();
+		search["address"] = $("#address").val();
 
 		$.ajax({
 			type : "POST",
