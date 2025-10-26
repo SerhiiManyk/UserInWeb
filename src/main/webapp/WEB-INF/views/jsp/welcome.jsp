@@ -49,7 +49,7 @@
 				</div>
 			</div>
 						<div class="form-group form-group-lg">
-            				<label class="col-sm-2 control-label">Adress Kurvy</label>
+            				<label class="col-sm-2 control-label">Address</label>
             				<div class="col-sm-10">
             					<input type="text" class="form-control" id="address">
             				</div>
@@ -60,8 +60,7 @@
 					<button type="submit" id="bth-search"
 						class="btn btn-primary btn-lg">Search</button>
 
-                                        					<button type="submit" id="bth-search"
-                                        						class="btn btn-primary btn-lg">Stara Kurva</button>
+                     <button type="button" id="btn-create" class="btn btn-success btn-lg">Create new user</button>
 				</div>
 
 
