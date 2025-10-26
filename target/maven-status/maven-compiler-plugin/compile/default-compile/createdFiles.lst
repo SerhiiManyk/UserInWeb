@@ -1,3 +1,4 @@
+com/mkyong/config/DatabaseConfig.class
 com/mkyong/web/controller/AjaxController.class
 com/mkyong/web/model/SearchCriteria.class
 com/mkyong/servlet3/MyWebInitializer.class
