@@ -5,8 +5,11 @@ import com.mkyong.web.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -61,19 +64,21 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void create(User user) {
+        String sql = "INSERT INTO users (username, password, email, phone, address) VALUES (?, ?, ?, ?, ?)";
 
-        String sql = "INSERT INTO users (username, password, email, phone, address) " +
-                "VALUES (?, ?, ?, ?, ?) RETURNING id";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        Long id = jdbcTemplate.queryForObject(sql, new Object[]{
-                user.getUsername(),
-                user.getPassword(),
-                user.getEmail(),
-                user.getPhone(),
-                user.getAddress()
-        }, Long.class);
-
-        user.setId(id);
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getEmail());
+            ps.setString(4, user.getPhone());
+            ps.setString(5, user.getAddress());
+            return ps;
+        }, keyHolder);
+        
+        user.setId(keyHolder.getKey().longValue());
     }
 
     @Override
