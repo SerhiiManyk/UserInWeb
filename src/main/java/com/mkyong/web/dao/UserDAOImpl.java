@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +38,25 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> findByCriteria(SearchCriteria criteria) {
-        return List.of();
+        StringBuilder sql = new StringBuilder("SELECT id, username, password, email, phone, address FROM users WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+
+        if (criteria.getUsername() != null && !criteria.getUsername().isEmpty()) {
+            sql.append(" AND username = ?");
+            params.add(criteria.getUsername());
+        }
+
+        if (criteria.getEmail() != null && !criteria.getEmail().isEmpty()) {
+            sql.append(" AND email = ?");
+            params.add(criteria.getEmail());
+        }
+
+        if (criteria.getAddress() != null && !criteria.getAddress().isEmpty()) {
+            sql.append(" AND address = ?");
+            params.add(criteria.getAddress());
+        }
+
+        return jdbcTemplate.query(sql.toString(), params.toArray(), new UserRowMapper());
     }
 
     @Override
