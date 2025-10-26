@@ -77,7 +77,7 @@ public class UserDAOImpl implements UserDAO {
             ps.setString(5, user.getAddress());
             return ps;
         }, keyHolder);
-        
+
         user.setId(keyHolder.getKey().longValue());
     }
 
@@ -104,7 +104,8 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void delete(Long id) {
-
+        String deleteQuery = "delete from Student where id = ?";
+        jdbcTemplate.update(deleteQuery, id);
     }
 
     private static final class UserRowMapper implements RowMapper<User> {
