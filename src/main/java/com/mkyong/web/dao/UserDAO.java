@@ -3,12 +3,13 @@ package com.mkyong.web.dao;
 import com.mkyong.web.model.SearchCriteria;
 import com.mkyong.web.model.User;
 import java.util.List;
+import java.util.Optional;
 
 public interface UserDAO {
 
     List<User> findAll();
 
-    User findById(Long id);
+    Optional findById(Long id);
 
     List<User> findByCriteria(SearchCriteria criteria);
 

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
@@ -19,12 +20,19 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> findAll() {
-        return List.of();
+        String sql = "SELECT id, username, password, email, phone, address FROM users";
+        return jdbcTemplate.query(sql, new UserRowMapper());
     }
 
     @Override
-    public User findById(Long id) {
-        return null;
+    public Optional<User> findById(Long id) {
+        String sql = "SELECT id, username, password, email, phone, address FROM users WHERE id = ?";
+        try {
+            User user = jdbcTemplate.queryForObject(sql, new Object[]{id}, new UserRowMapper());
+            return Optional.of(user);
+        } catch (org.springframework.dao.EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
