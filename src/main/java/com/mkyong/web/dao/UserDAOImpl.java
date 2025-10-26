@@ -5,10 +5,14 @@ import com.mkyong.web.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,22 +41,71 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> findByCriteria(SearchCriteria criteria) {
-        return List.of();
+        StringBuilder sql = new StringBuilder("SELECT id, username, password, email, phone, address FROM users WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+
+        if (criteria.getUsername() != null && !criteria.getUsername().isEmpty()) {
+            sql.append(" AND username = ?");
+            params.add(criteria.getUsername());
+        }
+
+        if (criteria.getEmail() != null && !criteria.getEmail().isEmpty()) {
+            sql.append(" AND email = ?");
+            params.add(criteria.getEmail());
+        }
+
+        if (criteria.getAddress() != null && !criteria.getAddress().isEmpty()) {
+            sql.append(" AND address = ?");
+            params.add(criteria.getAddress());
+        }
+
+        return jdbcTemplate.query(sql.toString(), params.toArray(), new UserRowMapper());
     }
 
     @Override
     public void create(User user) {
+        String sql = "INSERT INTO users (username, password, email, phone, address) VALUES (?, ?, ?, ?, ?)";
 
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getEmail());
+            ps.setString(4, user.getPhone());
+            ps.setString(5, user.getAddress());
+            return ps;
+        }, keyHolder);
+
+        user.setId(keyHolder.getKey().longValue());
     }
 
     @Override
     public void update(User user) {
 
+        String sql = "UPDATE users SET username = ?, password = ?, email = ?, phone = ?, address = ? WHERE id = ?";
+
+        int rowsAffected = jdbcTemplate.update(sql,
+                user.getUsername(),
+                user.getPassword(),
+                user.getEmail(),
+                user.getPhone(),
+                user.getAddress(),
+                user.getId()
+        );
+
+        if (rowsAffected > 0) {
+            System.out.println("User with ID " + user.getId() + " was updated successfully.");
+        } else {
+            System.out.println("No user found with ID " + user.getId());
+        }
     }
 
     @Override
     public void delete(Long id) {
-
+        String deleteQuery = "delete from Student where id = ?";
+        jdbcTemplate.update(deleteQuery, id);
     }
 
     private static final class UserRowMapper implements RowMapper<User> {
