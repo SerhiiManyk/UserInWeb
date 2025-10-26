@@ -62,11 +62,39 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void create(User user) {
 
+        String sql = "INSERT INTO users (username, password, email, phone, address) " +
+                "VALUES (?, ?, ?, ?, ?) RETURNING id";
+
+        Long id = jdbcTemplate.queryForObject(sql, new Object[]{
+                user.getUsername(),
+                user.getPassword(),
+                user.getEmail(),
+                user.getPhone(),
+                user.getAddress()
+        }, Long.class);
+
+        user.setId(id);
     }
 
     @Override
     public void update(User user) {
 
+        String sql = "UPDATE users SET username = ?, password = ?, email = ?, phone = ?, address = ? WHERE id = ?";
+
+        int rowsAffected = jdbcTemplate.update(sql,
+                user.getUsername(),
+                user.getPassword(),
+                user.getEmail(),
+                user.getPhone(),
+                user.getAddress(),
+                user.getId()
+        );
+
+        if (rowsAffected > 0) {
+            System.out.println("User with ID " + user.getId() + " was updated successfully.");
+        } else {
+            System.out.println("No user found with ID " + user.getId());
+        }
     }
 
     @Override
