@@ -6,24 +6,36 @@ import com.mkyong.web.jsonview.Views;
 public class User {
 
     @JsonView(Views.Public.class)
+    private Long id;
+    @JsonView(Views.Public.class)
     String username;
     String password;
     @JsonView(Views.Public.class)
     String email;
     @JsonView(Views.Public.class)
     String phone;
+    @JsonView(Views.Public.class)
     String address;
 
     public User() {
     }
 
-    public User(String username, String password, String email, String phone, String address) {
+    public User(Long id,String username, String password, String email, String phone, String address) {
         super();
+        this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
         this.phone = phone;
         this.address = address;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -68,8 +80,9 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [username=" + username + ", password=" + password + ", email=" + email + ", phone=" + phone
-                + ", address=" + address + "]";
+        return "User [id=" + id + ", username=" + username + ", password=" + password + ", email=" + email +
+                ", phone=" + phone + ", address=" + address + "]";
     }
+
 
 }

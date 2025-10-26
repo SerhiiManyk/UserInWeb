@@ -4,6 +4,15 @@ public class SearchCriteria {
 
     String username;
     String email;
+    String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public String getUsername() {
         return username;
@@ -23,7 +32,10 @@ public class SearchCriteria {
 
     @Override
     public String toString() {
-        return "SearchCriteria [username=" + username + ", email=" + email + "]";
+        return "SearchCriteria{" +
+                "username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                '}';
     }
-
 }

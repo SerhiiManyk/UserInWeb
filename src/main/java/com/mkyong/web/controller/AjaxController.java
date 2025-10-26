@@ -30,7 +30,7 @@ public class AjaxController {
         System.out.println("===============================result ----" +  result);
 
         if (isValidSearchCriteria(search)) {
-            List<User> users = findByUserNameOrEmail(search.getUsername(), search.getEmail());
+            List<User> users = findByUserNameOrEmailorAddress(search.getUsername(), search.getEmail(),search.getAddress());
 
 
             if (users.size() > 0) {
@@ -61,7 +61,7 @@ public class AjaxController {
             valid = false;
         }
 
-        if ((StringUtils.isEmpty(search.getUsername())) && (StringUtils.isEmpty(search.getEmail()))) {
+        if ((StringUtils.isEmpty(search.getUsername())) && (StringUtils.isEmpty(search.getEmail())) && (StringUtils.isEmpty(search.getAddress()))) {
             valid = false;
         }
 
@@ -74,23 +74,25 @@ public class AjaxController {
         User user1 = new User("mkyong", "pass123", "mkyong@yahoo.com", "012-1234567", "address 123");
         User user2 = new User("yflow", "pass456", "yflow@yahoo.com", "016-7654321", "address 456");
         User user3 = new User("laplap", "pass789", "mkyong@yahoo.com", "012-111111", "address 789");
+        User user4 = new User("Serhii", "pass12345", "manser@yahoo.com", "503-808-557", "Ramzesa 8");
         users.add(user1);
         users.add(user2);
         users.add(user3);
+        users.add(user4);
         return users;
     }
 
     // Simulate the search function
-    private List<User> findByUserNameOrEmail(String username, String email) {
+    private List<User> findByUserNameOrEmailorAddress(String username, String email, String address) {
 
         List<User> result = new ArrayList<User>();
 
         for (User user : users) {
             System.out.println("User ----" +  user);
 
-            if ((!StringUtils.isEmpty(username)) && (!StringUtils.isEmpty(email))) {
+            if ((!StringUtils.isEmpty(username)) && (!StringUtils.isEmpty(email)) && (!StringUtils.isEmpty(address))) {
 
-                if (username.equals(user.getUsername()) && email.equals(user.getEmail())) {
+                if (username.equals(user.getUsername()) && email.equals(user.getEmail()) && address.equals(user.getAddress())) {
                     result.add(user);
                     continue;
                 } else {
@@ -107,6 +109,13 @@ public class AjaxController {
 
             if (!StringUtils.isEmpty(email)) {
                 if (email.equals(user.getEmail())) {
+                    result.add(user);
+                    continue;
+                }
+            }
+
+            if (!StringUtils.isEmpty(address)) {
+                if (address.equals(user.getAddress())) {
                     result.add(user);
                     continue;
                 }
