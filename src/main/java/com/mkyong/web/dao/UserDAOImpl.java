@@ -104,7 +104,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void delete(Long id) {
-        String deleteQuery = "delete from Student where id = ?";
+        String deleteQuery = "delete from user where id = ?";
         jdbcTemplate.update(deleteQuery, id);
     }
 
