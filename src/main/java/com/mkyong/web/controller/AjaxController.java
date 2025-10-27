@@ -3,6 +3,8 @@ package com.mkyong.web.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mkyong.web.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,9 @@ import com.mkyong.web.model.User;
 @RestController
 public class AjaxController {
 
+    @Autowired
+    private UserService userService;
+
     List<User> users = iniDataForTesting();
 
     // @ResponseBody, not necessary, since class is annotated with @RestController
@@ -30,7 +35,7 @@ public class AjaxController {
         System.out.println("===============================result ----" +  result);
 
         if (isValidSearchCriteria(search)) {
-            List<User> users = findByUserNameOrEmailorAddress(search.getUsername(), search.getEmail(),search.getAddress());
+            List<User> users = userService.findByCriteria(search);
 
 
             if (users.size() > 0) {
@@ -46,10 +51,8 @@ public class AjaxController {
             result.setCode("400");
             result.setMsg("Search criteria is empty!");
         }
-
         //AjaxResponseBody will be converted into json format and send back to client.
         return result;
-
     }
 
     private boolean isValidSearchCriteria(SearchCriteria search) {

@@ -1,6 +1,7 @@
 package com.mkyong.web.service;
 
 import com.mkyong.web.dao.UserDAO;
+import com.mkyong.web.model.SearchCriteria;
 import com.mkyong.web.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,5 +47,10 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Invalid user ID");
         }
         userDAO.delete(id);
+    }
+
+    @Override
+    public List<User> findByCriteria(SearchCriteria criteria) {
+        return userDAO.findByCriteria(criteria);
     }
 }
