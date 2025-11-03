@@ -12,4 +12,5 @@ com/mkyong/web/dao/UserDAO.class
 com/mkyong/web/jsonview/Views$Public.class
 com/mkyong/web/model/AjaxResponseBody.class
 com/mkyong/web/controller/WelcomeController.class
+com/mkyong/web/controller/UserController.class
 com/mkyong/web/model/User.class
