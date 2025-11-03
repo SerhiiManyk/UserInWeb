@@ -2,18 +2,33 @@ package com.mkyong.web.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mkyong.web.jsonview.Views;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 public class User {
 
     @JsonView(Views.Public.class)
     private Long id;
+
     @JsonView(Views.Public.class)
+    @NotEmpty(message = "Username is required")
+    @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
     String username;
+
+    @NotEmpty(message = "Password cannot be empty")
+    @Size(min = 6, message = "Password must be at least 6 characters long")
     String password;
+
+
     @JsonView(Views.Public.class)
+    @Email(message = "Invalid email format")
+    @NotEmpty(message = "Email cannot be empty")
     String email;
+
     @JsonView(Views.Public.class)
     String phone;
+
     @JsonView(Views.Public.class)
     String address;
 
