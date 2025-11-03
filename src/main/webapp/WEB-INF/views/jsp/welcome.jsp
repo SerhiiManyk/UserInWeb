@@ -60,7 +60,8 @@
 					<button type="submit" id="bth-search"
 						class="btn btn-primary btn-lg">Search</button>
 
-                     <button type="button" id="btn-create" class="btn btn-success btn-lg">Create new user</button>
+                    <a href="${home}user/create" class="btn btn-success btn-lg">Create new user</a>
+
 				</div>
 
 
