@@ -121,4 +121,15 @@ public class UserDAOImpl implements UserDAO {
             return user;
         }
     }
+
+    @Override
+    public Optional<User> findByUsername(String name) {
+        String sql = "SELECT id, username, password, email, phone, address FROM users WHERE username = ?";
+        try {
+            User user = jdbcTemplate.queryForObject(sql, new Object[]{name}, new UserRowMapper());
+            return Optional.of(user);
+        } catch (org.springframework.dao.EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+    }
 }
