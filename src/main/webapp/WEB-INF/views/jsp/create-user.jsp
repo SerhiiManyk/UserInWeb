@@ -85,7 +85,11 @@
       <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
               <button type="submit" class="btn btn-primary">Save</button>
-              <a href="<c:url value='/' />" class="btn btn-danger">Cancel</a>
+
+              <a href="<c:url value='/user/create' />" class="btn btn-warning text-white">Clear</a>
+
+              <a href="javascript:history.back()" class="btn btn-danger">Come Back</a>
+
           </div>
       </div>
 
