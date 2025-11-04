@@ -53,4 +53,14 @@ public class UserServiceImpl implements UserService {
     public List<User> findByCriteria(SearchCriteria criteria) {
         return userDAO.findByCriteria(criteria);
     }
+
+    @Override
+    public Optional<User> login(String username, String password) {
+        if (username == null || password == null) {
+            return Optional.empty();
+        }
+
+        return userDAO.findByUsername(username)
+                .filter(user -> user.getPassword().equals(password));
+    }
 }
