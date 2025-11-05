@@ -15,12 +15,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDAO userDAO;
 
-    @Override
     public List<User> getAllUsers() {
         return userDAO.findAll();
     }
 
-    @Override
     public Optional<User> getUserById(Long id) {
         if (id == null || id <= 0) {
             throw new IllegalArgumentException("Invalid user ID");
@@ -28,12 +26,29 @@ public class UserServiceImpl implements UserService {
         return userDAO.findById(id);
     }
 
-    @Override
+
     public void createUser(User user) {
+
+        if (user == null) {
+            throw new IllegalArgumentException("User object cannot be null");
+        }
+
+        if (user.getUsername() == null || user.getUsername().trim().isEmpty()) {
+            throw new IllegalArgumentException("Username is required");
+        }
+
+        if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
+            throw new IllegalArgumentException("Password is required");
+        }
+
+        if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
+            throw new IllegalArgumentException("Email is required");
+        }
+
         userDAO.create(user);
     }
 
-    @Override
+
     public void updateUser(User user) {
         if (user.getId() == null) {
             throw new IllegalArgumentException("Cannot update user without ID");
@@ -41,7 +56,6 @@ public class UserServiceImpl implements UserService {
         userDAO.update(user);
     }
 
-    @Override
     public void deleteUser(Long id) {
         if (id == null || id <= 0) {
             throw new IllegalArgumentException("Invalid user ID");
@@ -49,18 +63,17 @@ public class UserServiceImpl implements UserService {
         userDAO.delete(id);
     }
 
-    @Override
     public List<User> findByCriteria(SearchCriteria criteria) {
         return userDAO.findByCriteria(criteria);
     }
 
 
-    public Optional<User> login(String username, String password) {
-        if (username == null || password == null) {
+    public Optional<User> login(String email, String password) {
+        if (email == null || password == null) {
             return Optional.empty();
         }
 
-        return userDAO.findByUsername(username)
+        return userDAO.findByEmail(email)
                 .filter(user -> user.getPassword().equals(password));
     }
 }
