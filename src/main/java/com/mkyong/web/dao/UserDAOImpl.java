@@ -3,6 +3,7 @@ package com.mkyong.web.dao;
 import com.mkyong.web.model.SearchCriteria;
 import com.mkyong.web.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -22,13 +23,12 @@ public class UserDAOImpl implements UserDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @Override
+
     public List<User> findAll() {
         String sql = "SELECT id, username, password, email, phone, address FROM users";
         return jdbcTemplate.query(sql, new UserRowMapper());
     }
 
-    @Override
     public Optional<User> findById(Long id) {
         String sql = "SELECT id, username, password, email, phone, address FROM users WHERE id = ?";
         try {
@@ -39,7 +39,6 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
-    @Override
     public List<User> findByCriteria(SearchCriteria criteria) {
         StringBuilder sql = new StringBuilder("SELECT id, username, password, email, phone, address FROM users WHERE 1=1");
         List<Object> params = new ArrayList<>();
@@ -62,7 +61,6 @@ public class UserDAOImpl implements UserDAO {
         return jdbcTemplate.query(sql.toString(), params.toArray(), new UserRowMapper());
     }
 
-    @Override
     public void create(User user) {
         String sql = "INSERT INTO users (username, password, email, phone, address) VALUES (?, ?, ?, ?, ?)";
 
@@ -81,7 +79,6 @@ public class UserDAOImpl implements UserDAO {
         user.setId(keyHolder.getKey().longValue());
     }
 
-    @Override
     public void update(User user) {
 
         String sql = "UPDATE users SET username = ?, password = ?, email = ?, phone = ?, address = ? WHERE id = ?";
@@ -102,14 +99,13 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
-    @Override
     public void delete(Long id) {
         String deleteQuery = "delete from user where id = ?";
         jdbcTemplate.update(deleteQuery, id);
     }
 
     private static final class UserRowMapper implements RowMapper<User> {
-        @Override
+
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
             User user = new User();
             user.setId(rs.getLong("id"));
@@ -122,14 +118,14 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
-    @Override
-    public Optional<User> findByUsername(String name) {
-        String sql = "SELECT id, username, password, email, phone, address FROM users WHERE username = ?";
+    public Optional<User> findByEmail(String email) {
+        String sql = "SELECT id, username, password, email, phone, address FROM users WHERE email = ?";
         try {
-            User user = jdbcTemplate.queryForObject(sql, new Object[]{name}, new UserRowMapper());
+            User user = jdbcTemplate.queryForObject(sql, new Object[]{email}, new UserRowMapper());
             return Optional.of(user);
-        } catch (org.springframework.dao.EmptyResultDataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
+
 }

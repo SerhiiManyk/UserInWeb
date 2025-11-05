@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
         return userDAO.findByCriteria(criteria);
     }
 
-    @Override
+
     public Optional<User> login(String username, String password) {
         if (username == null || password == null) {
             return Optional.empty();
