@@ -14,5 +14,6 @@ public interface UserService {
     void updateUser(User user);
     void deleteUser(Long id);
     List<User> findByCriteria(SearchCriteria criteria);
+    Optional<User> login(String username, String password);
 
 }
