@@ -32,10 +32,10 @@ public class LoginController {
         Optional<User> userOpt = userService.login(user.getEmail(), user.getPassword());
         if (userOpt.isPresent()) {
             redirectAttributes.addFlashAttribute("message", "Login successful!");
-            return "redirect:/welcome";
+            return "redirect:welcome";
         } else {
             redirectAttributes.addFlashAttribute("error", "Error login. Wrong email or password.");
-            return "login";
+            return "redirect:login";
         }
     }
 }

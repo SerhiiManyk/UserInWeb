@@ -2,6 +2,7 @@
 /Users/admin/Desktop/untitled folder/UserInWeb/src/main/java/com/mkyong/servlet3/MyWebInitializer.java
 /Users/admin/Desktop/untitled folder/UserInWeb/src/main/java/com/mkyong/web/model/SearchCriteria.java
 /Users/admin/Desktop/untitled folder/UserInWeb/src/main/java/com/mkyong/web/dao/UserDAO.java
+/Users/admin/Desktop/untitled folder/UserInWeb/src/main/java/com/mkyong/web/controller/LoginController.java
 /Users/admin/Desktop/untitled folder/UserInWeb/src/main/java/com/mkyong/config/SpringWebConfig.java
 /Users/admin/Desktop/untitled folder/UserInWeb/src/main/java/com/mkyong/web/model/User.java
 /Users/admin/Desktop/untitled folder/UserInWeb/src/main/java/com/mkyong/web/service/UserService.java

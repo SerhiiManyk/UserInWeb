@@ -13,4 +13,9 @@ public class WelcomeController {
         return "welcome";
     }
 
+    @RequestMapping(value = "/welcome", method = RequestMethod.GET)
+    public String welcomePage(ModelMap model) {
+        return "welcome";
+    }
+
 }

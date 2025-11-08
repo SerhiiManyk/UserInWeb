@@ -3,6 +3,7 @@ com/mkyong/servlet3/MyWebInitializer.class
 com/mkyong/web/dao/UserDAOImpl.class
 com/mkyong/web/jsonview/Views.class
 com/mkyong/web/service/UserServiceImpl.class
+com/mkyong/web/controller/LoginController.class
 com/mkyong/config/DatabaseConfig.class
 com/mkyong/web/controller/AjaxController.class
 com/mkyong/web/dao/UserDAOImpl$UserRowMapper.class
