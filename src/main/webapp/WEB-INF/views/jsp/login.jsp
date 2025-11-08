@@ -10,6 +10,9 @@
     <c:url var="bootstrapCss" value="/resources/core/css/bootstrap.min.css" />
     <link href="${bootstrapCss}" rel="stylesheet" />
     <style>
+        body {
+            background-color: #e0f0ff; /* світло-блакитний фон для всієї сторінки */
+        }
         .container { margin-top: 30px; max-width: 500px; }
         .text-danger { margin-top: 5px; display: block; }
     </style>
