@@ -21,6 +21,11 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/title")
+    public String showTitlePage() {
+        return "title";
+    }
+
     @GetMapping
     public String showLoginForm(Model model) {
         model.addAttribute("user", new User());
