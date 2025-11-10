@@ -1,4 +1,5 @@
 com/mkyong/web/model/SearchCriteria.class
+com/mkyong/web/model/ToDo.class
 com/mkyong/servlet3/MyWebInitializer.class
 com/mkyong/web/dao/UserDAOImpl.class
 com/mkyong/web/jsonview/Views.class
