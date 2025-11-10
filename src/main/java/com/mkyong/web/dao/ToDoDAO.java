@@ -2,6 +2,7 @@ package com.mkyong.web.dao;
 
 import com.mkyong.web.model.SearchCriteria;
 import com.mkyong.web.model.ToDo;
+import com.mkyong.web.model.ToDoSearchCriteria;
 import com.mkyong.web.model.User;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface ToDoDAO {
 
     Optional<ToDo> findToDoById(Long id);
 
-    List<ToDo> findByCriteria(SearchCriteria criteria);
+    List<ToDo> searchToDoByCriteria(ToDoSearchCriteria toDoCriteria);
 
     void create(ToDo toDo);
 
