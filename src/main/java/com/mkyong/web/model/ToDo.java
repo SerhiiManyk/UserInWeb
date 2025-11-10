@@ -19,7 +19,7 @@ public class ToDo {
     @NotEmpty(message = "Add description")
     private String description;
 
-    private boolean completed;
+    private Boolean completed;
 
     public Long getId() {
         return id;
