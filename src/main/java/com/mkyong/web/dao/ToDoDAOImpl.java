@@ -4,6 +4,7 @@ import com.mkyong.web.model.ToDo;
 import com.mkyong.web.model.ToDoSearchCriteria;
 import com.mkyong.web.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -90,16 +91,35 @@ public class ToDoDAOImpl implements ToDoDAO {
     }
 
     public void update(ToDo toDo) {
+        String sql = "UPDATE todos SET userId = ?, title = ?, description = ?, completed = ? WHERE id = ?";
 
+        int rowsAffected = jdbcTemplate.update(sql,
+                toDo.getUserId(),
+                toDo.getTitle(),
+                toDo.getDescription(),
+                toDo.isCompleted(),
+                toDo.getId()
+        );
+
+        if (rowsAffected > 0) {
+            System.out.println("ToDo with ID " + toDo.getId() + " was updated successfully.");
+        } else {
+            System.out.println("No ToDo found with ID " + toDo.getId());
+        }
     }
 
 
     public void delete(Long id) {
-
+        String deleteQuery = "delete from todos where id = ?";
+        jdbcTemplate.update(deleteQuery, id);
     }
 
 
     public List<ToDo> findByUser(User user) {
-        return List.of();
+
+        String sql = "SELECT id, userId, title, description, completed FROM todos WHERE userId = ?";
+
+        List<ToDo> toDoList = jdbcTemplate.query(sql, new Object[]{user.getId()}, new ToDoDAOImpl.ToDoRowMapper());
+        return toDoList;
     }
 }
