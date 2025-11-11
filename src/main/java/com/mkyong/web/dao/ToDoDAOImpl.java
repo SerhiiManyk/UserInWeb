@@ -6,8 +6,11 @@ import com.mkyong.web.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class ToDoDAOImpl implements ToDoDAO{
+public class ToDoDAOImpl implements ToDoDAO {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -60,7 +63,7 @@ public class ToDoDAOImpl implements ToDoDAO{
             params.add("%" + toDoCriteria.getTitle() + "%");
         }
 
-        if (toDoCriteria.getCompleted() != null ) {
+        if (toDoCriteria.getCompleted() != null) {
             sql.append(" AND completed = ?");
             params.add(toDoCriteria.getCompleted());
         }
@@ -70,9 +73,21 @@ public class ToDoDAOImpl implements ToDoDAO{
 
 
     public void create(ToDo toDo) {
+        String sql = "INSERT INTO todos (userId, title, description, completed) VALUES (?, ?, ?, ?)";
 
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
+            ps.setLong(1, toDo.getUserId());
+            ps.setString(2, toDo.getTitle());
+            ps.setString(3, toDo.getDescription());
+            ps.setBoolean(4, toDo.isCompleted());
+            return ps;
+        }, keyHolder);
+
+        toDo.setId(keyHolder.getKey().longValue());
     }
-
 
     public void update(ToDo toDo) {
 
