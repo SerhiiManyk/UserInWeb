@@ -4,7 +4,6 @@ import com.mkyong.web.model.ToDo;
 import com.mkyong.web.model.ToDoSearchCriteria;
 import com.mkyong.web.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -121,5 +120,36 @@ public class ToDoDAOImpl implements ToDoDAO {
 
         List<ToDo> toDoList = jdbcTemplate.query(sql, new Object[]{user.getId()}, new ToDoDAOImpl.ToDoRowMapper());
         return toDoList;
+    }
+
+    public void updateCompleted(ToDo toDo) {
+
+        String sql = "UPDATE todos SET completed = ? WHERE id = ?";
+
+        int rowsAffected = jdbcTemplate.update(sql,
+                toDo.isCompleted(),
+                toDo.getId()
+        );
+        if (rowsAffected > 0) {
+            System.out.println("ToDo with ID " + toDo.getId() + " was updated successfully.");
+        } else {
+            System.out.println("No ToDo found with ID " + toDo.getId());
+        }
+    }
+
+    public List<ToDo> findCompletedByUser(User user) {
+
+        String sql = "SELECT * FROM todos WHERE userId = ? AND completed = ?";
+
+        List<ToDo> result = jdbcTemplate.query(sql, new ToDoRowMapper(), user.getId(), true);
+        return result;
+    }
+
+    public List<ToDo> findPendingByUser(User user) {
+
+        String sql = "SELECT * FROM todos WHERE userId = ? AND completed = ?";
+
+        List<ToDo> result = jdbcTemplate.query(sql, new ToDoRowMapper(), user.getId(), false);
+        return result;
     }
 }
