@@ -26,4 +26,5 @@ public interface ToDoService {
     List<ToDo> searchToDos(ToDoSearchCriteria criteria);
 
     void markAsCompleted(ToDo toDo);
+
 }

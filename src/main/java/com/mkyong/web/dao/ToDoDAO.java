@@ -23,4 +23,12 @@ public interface ToDoDAO {
     void delete(Long id);
 
     List<ToDo> findByUser(User user);
+
+    void updateCompleted(ToDo toDo);
+
+    List<ToDo> findCompletedByUser(User user);
+
+    List<ToDo> findPendingByUser(User user);
+
+
 }
