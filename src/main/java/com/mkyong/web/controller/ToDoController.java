@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
@@ -35,4 +36,38 @@ public class ToDoController {
         }
         return "todo-list";
     }
+
+    @GetMapping("/create")
+    public String createToDo (HttpSession session,Model model){
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null) {
+            model.addAttribute("error", "You must log in first.");
+            return "login";
+        }
+            model.addAttribute("todo",new ToDo());
+        return "todo-create";
+    }
+
+    @PostMapping("/create")
+    public String saveToDo(@ModelAttribute("todo") ToDo toDo,
+                           HttpSession session,
+                           Model model) {
+
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null) {
+            model.addAttribute("error", "You must log in first.");
+            return "login";
+        }
+        try {
+            toDo.setUserId(currentUser.getId());
+            toDoService.createToDo(toDo);
+            model.addAttribute("message", "ToDo successfully created!");
+            return "redirect:/todo/list";
+        } catch (Exception e) {
+            model.addAttribute("error", "Error creating ToDo: " + e.getMessage());
+            return "todo-create";
+        }
+    }
+
+
 }
