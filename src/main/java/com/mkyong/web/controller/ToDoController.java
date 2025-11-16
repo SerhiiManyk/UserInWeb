@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -67,7 +68,7 @@ public class ToDoController {
     }
 
     @GetMapping("edit/update/{id}")
-    public String updateToDo(@PathVariable("id") Long id,HttpSession session,Model model){
+    public String showUpdateToDoForm(@PathVariable("id") Long id,HttpSession session,Model model){
         User currentUser = (User) session.getAttribute("currentUser");
         if (currentUser == null) {
             model.addAttribute("error", "You must log in first.");
@@ -85,6 +86,26 @@ public class ToDoController {
             model.addAttribute("error", "You can't change this ToDo");
             return "todo-list";
         }
+    }
+
+    @PostMapping("edit/update")
+    public String updateToDo ( @ModelAttribute("todo") ToDo toDo,
+                               HttpSession session,
+                               RedirectAttributes redirectAttributes){
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null) {
+            redirectAttributes.addFlashAttribute("error", "You must log in first.");
+            return "redirect:/login";
+        }
+        if(toDo.getUserId().equals(currentUser.getId())){
+            toDoService.updateToDo(toDo);
+            redirectAttributes.addFlashAttribute("message", "ToDo updated successfully!");
+            return "redirect:/todo/list";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "You can't change this ToDo");
+            return "redirect:/todo/list";
+        }
+
     }
 
 
