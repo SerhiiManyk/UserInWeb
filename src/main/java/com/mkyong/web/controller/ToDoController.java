@@ -19,12 +19,19 @@ public class ToDoController {
     @Autowired
     private ToDoService toDoService;
 
+    private User getCurrentUser(HttpSession session, RedirectAttributes redirectAttributes) {
+        User user = (User) session.getAttribute("currentUser");
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("error", "You must log in first.");
+        }
+        return user;
+    }
+
     @GetMapping("/list")
-    public String getUserToDoList(HttpSession session, Model model) {
-        User currentUser = (User) session.getAttribute("currentUser");
+    public String getUserToDoList(HttpSession session,Model model, RedirectAttributes redirectAttributes) {
+        User currentUser = getCurrentUser(session, redirectAttributes);
         if (currentUser == null) {
-            model.addAttribute("error", "You must log in first.");
-            return "login";
+            return "redirect:/login";
         }
         try {
             List<ToDo> todos = toDoService.getToDosByUser(currentUser);
@@ -36,11 +43,10 @@ public class ToDoController {
     }
 
     @GetMapping("/create")
-    public String createToDo (HttpSession session,Model model){
-        User currentUser = (User) session.getAttribute("currentUser");
+    public String createToDo (HttpSession session,Model model, RedirectAttributes redirectAttributes){
+        User currentUser = getCurrentUser(session, redirectAttributes);
         if (currentUser == null) {
-            model.addAttribute("error", "You must log in first.");
-            return "login";
+            return "redirect:/login";
         }
             model.addAttribute("todo",new ToDo());
         return "todo-create";
@@ -49,12 +55,11 @@ public class ToDoController {
     @PostMapping("/create")
     public String saveToDo(@ModelAttribute("todo") ToDo toDo,
                            HttpSession session,
-                           Model model) {
-
-        User currentUser = (User) session.getAttribute("currentUser");
+                           Model model,
+                           RedirectAttributes redirectAttributes) {
+        User currentUser = getCurrentUser(session, redirectAttributes);
         if (currentUser == null) {
-            model.addAttribute("error", "You must log in first.");
-            return "login";
+            return "redirect:/login";
         }
         try {
             toDo.setUserId(currentUser.getId());
@@ -68,11 +73,13 @@ public class ToDoController {
     }
 
     @GetMapping("edit/update/{id}")
-    public String showUpdateToDoForm(@PathVariable("id") Long id,HttpSession session,Model model){
-        User currentUser = (User) session.getAttribute("currentUser");
+    public String showUpdateToDoForm(@PathVariable("id") Long id,
+                                     HttpSession session,
+                                     Model model,
+                                     RedirectAttributes redirectAttributes){
+        User currentUser = getCurrentUser(session, redirectAttributes);
         if (currentUser == null) {
-            model.addAttribute("error", "You must log in first.");
-            return "login";
+            return "redirect:/login";
         }
         if(toDoService.getToDoById(id).isEmpty()){
             model.addAttribute("error", "Error ToDo update");
@@ -92,9 +99,8 @@ public class ToDoController {
     public String updateToDo ( @ModelAttribute("todo") ToDo toDo,
                                HttpSession session,
                                RedirectAttributes redirectAttributes){
-        User currentUser = (User) session.getAttribute("currentUser");
+        User currentUser = getCurrentUser(session, redirectAttributes);
         if (currentUser == null) {
-            redirectAttributes.addFlashAttribute("error", "You must log in first.");
             return "redirect:/login";
         }
         if(toDo.getUserId().equals(currentUser.getId())){
@@ -105,7 +111,6 @@ public class ToDoController {
             redirectAttributes.addFlashAttribute("error", "You can't change this ToDo");
             return "redirect:/todo/list";
         }
-
     }
 
 
