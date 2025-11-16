@@ -6,10 +6,7 @@ import com.mkyong.web.service.ToDoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -66,6 +63,27 @@ public class ToDoController {
         } catch (Exception e) {
             model.addAttribute("error", "Error creating ToDo: " + e.getMessage());
             return "todo-create";
+        }
+    }
+
+    @GetMapping("edit/update/{id}")
+    public String updateToDo(@PathVariable("id") Long id,HttpSession session,Model model){
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null) {
+            model.addAttribute("error", "You must log in first.");
+            return "login";
+        }
+        if(toDoService.getToDoById(id).isEmpty()){
+            model.addAttribute("error", "Error ToDo update");
+            return "todo-list";
+        }
+        ToDo toDo = toDoService.getToDoById(id).get();
+        if(toDo.getUserId().equals(currentUser.getId())){
+            model.addAttribute("todo", toDo);
+            return "todo-edit";
+        }else {
+            model.addAttribute("error", "You can't change this ToDo");
+            return "todo-list";
         }
     }
 
