@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/todo")
@@ -28,7 +29,7 @@ public class ToDoController {
     }
 
     @GetMapping("/list")
-    public String getUserToDoList(HttpSession session,Model model, RedirectAttributes redirectAttributes) {
+    public String getUserToDoList(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
         User currentUser = getCurrentUser(session, redirectAttributes);
         if (currentUser == null) {
             return "redirect:/login";
@@ -43,12 +44,12 @@ public class ToDoController {
     }
 
     @GetMapping("/create")
-    public String createToDo (HttpSession session,Model model, RedirectAttributes redirectAttributes){
+    public String createToDo(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
         User currentUser = getCurrentUser(session, redirectAttributes);
         if (currentUser == null) {
             return "redirect:/login";
         }
-            model.addAttribute("todo",new ToDo());
+        model.addAttribute("todo", new ToDo());
         return "todo-create";
     }
 
@@ -76,39 +77,67 @@ public class ToDoController {
     public String showUpdateToDoForm(@PathVariable("id") Long id,
                                      HttpSession session,
                                      Model model,
-                                     RedirectAttributes redirectAttributes){
+                                     RedirectAttributes redirectAttributes) {
         User currentUser = getCurrentUser(session, redirectAttributes);
         if (currentUser == null) {
             return "redirect:/login";
         }
-        if(toDoService.getToDoById(id).isEmpty()){
+        if (toDoService.getToDoById(id).isEmpty()) {
             model.addAttribute("error", "Error ToDo update");
             return "todo-list";
         }
         ToDo toDo = toDoService.getToDoById(id).get();
-        if(toDo.getUserId().equals(currentUser.getId())){
+        if (toDo.getUserId().equals(currentUser.getId())) {
             model.addAttribute("todo", toDo);
             return "todo-edit";
-        }else {
+        } else {
             model.addAttribute("error", "You can't change this ToDo");
             return "todo-list";
         }
     }
 
     @PostMapping("edit/update")
-    public String updateToDo ( @ModelAttribute("todo") ToDo toDo,
-                               HttpSession session,
-                               RedirectAttributes redirectAttributes){
+    public String updateToDo(@ModelAttribute("todo") ToDo toDo,
+                             HttpSession session,
+                             RedirectAttributes redirectAttributes) {
         User currentUser = getCurrentUser(session, redirectAttributes);
         if (currentUser == null) {
             return "redirect:/login";
         }
-        if(toDo.getUserId().equals(currentUser.getId())){
+        if (toDo.getUserId().equals(currentUser.getId())) {
             toDoService.updateToDo(toDo);
             redirectAttributes.addFlashAttribute("message", "ToDo updated successfully!");
             return "redirect:/todo/list";
         } else {
             redirectAttributes.addFlashAttribute("error", "You can't change this ToDo");
+            return "redirect:/todo/list";
+        }
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteToDo(@PathVariable("id") Long id,
+                             HttpSession session,
+                             RedirectAttributes redirectAttributes) {
+        User currentUser = getCurrentUser(session, redirectAttributes);
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+        if(id<=0){
+            redirectAttributes.addFlashAttribute("error", "Invalid ToDo ID."+id);
+            return "redirect:/todo/list";
+        }
+        Optional<ToDo> optionalToDo = toDoService.getToDoById(id);
+        if (optionalToDo.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "ToDo not found!");
+            return "redirect:/todo/list";
+        }
+        ToDo todoFromDb = optionalToDo.get();
+        if (todoFromDb.getUserId().equals(currentUser.getId())) {
+            toDoService.deleteToDo(id);
+            redirectAttributes.addFlashAttribute("success", "ToDo delete successfully!");
+            return "redirect:/todo/list";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "You cannot delete a ToDo that does not belong to you.");
             return "redirect:/todo/list";
         }
     }
