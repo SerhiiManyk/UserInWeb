@@ -142,5 +142,33 @@ public class ToDoController {
         }
     }
 
+    @PostMapping("/complete/{id}")
+    public String markAsComplete(@PathVariable("id") Long id,
+                                 HttpSession session,
+                                 RedirectAttributes redirectAttributes) {
+        User currentUser = getCurrentUser(session, redirectAttributes);
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+        if(id<=0){
+            redirectAttributes.addFlashAttribute("error", "Invalid ToDo ID."+id);
+            return "redirect:/todo/list";
+        }
+        Optional<ToDo> optionalToDo = toDoService.getToDoById(id);
+        if (optionalToDo.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "ToDo not found!");
+            return "redirect:/todo/list";
+        }
+        ToDo todoFromDb = optionalToDo.get();
+        if (todoFromDb.getUserId().equals(currentUser.getId())) {
+            toDoService.markAsCompleted(todoFromDb);
+            redirectAttributes.addFlashAttribute("success", "ToDo mark as complete!");
+            return "redirect:/todo/list";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "You cannot change ToDo that does not belong to you.");
+            return "redirect:/todo/list";
+        }
+    }
+
 
 }
