@@ -12,6 +12,10 @@
     <link href="${bootstrapCss}" rel="stylesheet" />
     <link href="${mainCss}" rel="stylesheet" />
     <style>
+            /* фон сторінки */
+            body {
+                background-color: #ffe6cc; /* світло-оранжевий відтінок */
+            }
       /* невелике вирівнювання форми */
       .container { margin-top: 30px; }
       .text-danger { margin-top: 5px; display:block; }

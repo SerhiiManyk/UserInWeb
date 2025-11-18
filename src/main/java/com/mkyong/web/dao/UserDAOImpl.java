@@ -100,7 +100,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     public void delete(Long id) {
-        String deleteQuery = "delete from user where id = ?";
+        String deleteQuery = "delete from users where id = ?";
         jdbcTemplate.update(deleteQuery, id);
     }
 

@@ -17,6 +17,16 @@
 <spring:url value="/resources/core/js/jquery.1.10.2.min.js"
 	var="jqueryJs" />
 <script src="${jqueryJs}"></script>
+    <!-- Додаємо фон для welcome.jsp -->
+    <style>
+        body {
+            background-color: #e6ffe6; /* світло-зелений фон */
+        }
+        .container {
+            margin-top: 30px;
+            max-width: 700px;
+        }
+    </style>
 </head>
 
 <nav class="navbar navbar-inverse">
